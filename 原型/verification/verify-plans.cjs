@@ -368,9 +368,119 @@ const {
   await cmd("Please cancel my appointment.", "npc", "Emma");
   assert.equal((await state()).time, cancelledTime);
   assert.equal((await state()).appointment.status, "Cancelled");
+  // Run remaining commits supported actions in order, but hands control back for IM.
+  await reset();
+  await cmd(
+    "Go to the entrance then take the house key then give the key to Sarah",
+  );
+  await button("Save itinerary").click();
+  await button("Run remaining steps").click();
+  await page.waitForFunction(
+    () => Prototype.state().itinerary.status === "completed",
+  );
+  assert.equal((await state()).items.key, "Sarah");
+  assert.equal((await state()).itinerary.autoRun, false);
+
+  // Optional invitations wait for active-task capacity, then publish once.
+  await reset();
+  await setFixture(() => {
+    s.tasks.documents = "preparing";
+    s.tasks.hospital = "registered";
+    s.tasks.route = "in-progress";
+    s.consulted = true;
+    s.roadEvent = true;
+    s.appointment = { day: s.day, time: 540, status: "Booked" };
+    s.settings.inviteLimit = 2;
+    s.pendingInvitations = [];
+    Life.tick();
+    save();
+    render();
+  });
+  assert.deepEqual(
+    (await state()).pendingInvitations.slice().sort(),
+    ["delay", "summary"],
+  );
+  assert.equal((await state()).tasks.summary, "none");
+  await cmd("Open task board.");
+  assert.match(await page.locator("#modal").innerText(), /Waiting for room in your day/);
+  await close();
+  await setFixture(() => {
+    Life.invite("key");
+    Life.tick();
+    save();
+  });
+  assert.deepEqual(
+    (await state()).pendingInvitations.slice().sort(),
+    ["delay", "key", "summary"],
+  );
+  await setFixture(() => {
+    s.tasks.route = "completed";
+    Life.tick();
+    save();
+    render();
+  });
+  assert.equal((await state()).tasks.summary, "invited");
+  assert.equal((await state()).tasks.delay, "invited");
+  assert.equal((await state()).tasks.key, "none");
+  assert.deepEqual((await state()).pendingInvitations, ["key"]);
+  assert.equal((await state()).invitationDays[1], 2);
+  await setFixture(() => {
+    s.day = 2;
+    s.appointment = null;
+    s.roadEvent = false;
+    Life.tick();
+    save();
+    render();
+  });
+  assert.equal((await state()).tasks.key, "invited");
+  assert.deepEqual((await state()).pendingInvitations, []);
+  assert.equal((await state()).invitationDays[2], 1);
+
+  // A reply checkpoint stops a multi-step wait and preserves its unelapsed time.
+  await reset();
+  await setFixture(() => {
+    s.replyQueue = [
+      { who: "Sarah", day: s.day, due: s.time + 3, text: "How are you today?" },
+    ];
+    save();
+    render();
+  });
+  await cmd("Wait for 10 minutes then go to the entrance");
+  await button("Save itinerary").click();
+  await cmd("Open world desk.");
+  await page.locator('[data-desk="timeline"]').click();
+  assert.match(await page.locator("#modal").innerText(), /Sarah may reply/);
+  assert.match(await page.locator("#modal").innerText(), /07:03/);
+  await page.screenshot({ path: "原型/verification/timeline-1440.png" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  assert.equal(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > innerWidth,
+    ),
+    false,
+  );
+  assert.equal(
+    await page
+      .locator("#modal")
+      .evaluate((d) => d.scrollWidth > d.clientWidth + 1),
+    false,
+  );
+  await page.screenshot({ path: "原型/verification/timeline-390.png" });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await close();
+  await cmd("Open itinerary.");
+  await button("Run remaining steps").click();
+  await page.waitForFunction(
+    () => Prototype.state().plan?.status === "paused",
+  );
+  assert.equal((await state()).time, 423);
+  assert.equal((await state()).plan.steps[0].minutes, 7);
+  assert.equal((await state()).itinerary.autoRun, false);
+  assert.equal((await state()).itinerary.steps[0].status, "executing");
+  assert.equal((await state()).itinerary.steps[1].status, "pending");
   assert.deepEqual(errors, []);
   console.log(
-    "PASS executable itinerary and exact IM drafts, unknown-step rejection, edit/cancel/reload, async checkpoints, cross-day slot UI, midnight, missed check-in guard, standby ID/duplicate/offer/expiry/capacity/closing, append-only deadline renegotiation and failed-attempt follow-up, desktop/mobile",
+    "PASS executable itinerary and exact IM drafts, invitation capacity queue/deduplication, unknown-step rejection, edit/cancel/reload, async checkpoints, continuous execution and event pause with remaining time, timeline reply checkpoints, cross-day slot UI, midnight, missed check-in guard, standby ID/duplicate/offer/expiry/capacity/closing, append-only deadline renegotiation and failed-attempt follow-up, desktop/mobile",
   );
   await browser.close();
 })().catch((e) => {

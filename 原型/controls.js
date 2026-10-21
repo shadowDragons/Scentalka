@@ -112,6 +112,7 @@ const Controls = (() => {
         pocket: () => openDrawer("pocket"),
         contacts: openDirectory,
         events: () => Life.openEvents(),
+        timeline: () => Timeline.open(),
         desk: () => WorldDesk.open(),
         stop: pausePlan,
       };

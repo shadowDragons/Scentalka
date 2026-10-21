@@ -187,6 +187,7 @@ const WorldDesk = (() => {
   function open(section = "home") {
     captureDraft();
     normalize(s);
+    if (section === "timeline") return Timeline.open();
     if (section === "voice") return Voices.queue();
     if (section === "objects") return Objects.open();
     if (section === "plans") return Plans.open();
@@ -206,6 +207,12 @@ const WorldDesk = (() => {
     if (section === "tasks") return Life.openTasks();
     if (section === "events") return Life.openEvents();
     const cards = [
+      [
+        "timeline",
+        "18",
+        "World timeline",
+        "See the game clock, saved actions and next known checkpoints.",
+      ],
       [
         "voice",
         "17",

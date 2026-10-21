@@ -15,6 +15,10 @@ const WorldActions = {
       }
       if (Plans.world(text) || Schedules.world(text) || Objects.world(text))
         return true;
+      if (/^(open|show) (world )?timeline[.!]?$/i.test(text)) {
+        Timeline.open();
+        return true;
+      }
       if (/^(open|show) (standby queue|hospital queue)[.!]?$/.test(t)) {
         Calendar.queue();
         return true;
@@ -287,6 +291,7 @@ const WorldActions = {
     function afterStep(step) {
       if (step.effect) {
         s.completedActions[step.effect] = s.time;
+        s.completedActions[step.effect + "At"] = Calendar.now();
         log(`You completed the household activity: ${step.effect}.`);
       }
       tick();

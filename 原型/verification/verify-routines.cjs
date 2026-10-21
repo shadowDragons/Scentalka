@@ -26,6 +26,34 @@ const {
     await button("Daily routine").click();
   };
   await reset();
+  await cmd("Hello.", "npc", "Sarah");
+  assert.equal((await state()).pending, (await state()).settings.simple);
+  const exchangeStart = (await state()).time;
+  await page.evaluate(() => selectContact("Mia"));
+  assert.equal((await state()).time, exchangeStart);
+  assert.equal((await state()).pending, (await state()).settings.simple);
+  await page.evaluate(() => setMode("assistant"));
+  await page.locator("#command-input").fill("What can I do here?");
+  await page.locator("#send-button").click();
+  assert.equal((await state()).time, exchangeStart);
+  assert.equal((await state()).pending, (await state()).settings.simple);
+  await cmd("Wait for 5 minutes.");
+  await page.waitForFunction(() => Prototype.state().time === 426);
+  assert.equal((await state()).pending, 0);
+  await cmd("Wait for 5 minutes.");
+  await page.waitForFunction(() => Prototype.state().time === 431);
+  assert.equal((await state()).pending, 0);
+  await reset();
+  await cmd("Hello.", "npc", "Sarah");
+  await cmd("End this conversation.", "npc", "Sarah");
+  assert.equal((await state()).time, 421);
+  assert.equal((await state()).pending, 0);
+  await cmd("End this conversation.", "npc", "Sarah");
+  assert.equal((await state()).time, 421);
+  console.log(
+    "PASS dialogue time stays pending across contact switches and assistant help, settles before a world action or explicit conversation end, and never settles twice",
+  );
+  await reset();
   await edit("Sarah");
   await page.locator("#routine-end-0").fill("08:00");
   await page.locator("#routine-add").click();

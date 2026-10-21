@@ -56,6 +56,7 @@ const Life = (() => {
     st.bookingsHistory ??= [];
     st.completedActions ??= {};
     st.invitationDays ??= {};
+    st.pendingInvitations ??= [];
     st.helpTrail ??= [];
     st.tasks.route ??= "none";
     st.tasks.delay ??= "none";
@@ -103,9 +104,12 @@ const Life = (() => {
     );
   }
   function openTasks() {
+    const waiting = s.pendingInvitations
+      .map((k) => s.taskPresets[k]?.title)
+      .filter(Boolean);
     showModal(
       "The things you choose to take on",
-      `<button class="desk-back" data-life-back>← World desk</button><p>Requests are not promises. Accept only what you choose; refusal does not create a missed commitment.</p>${Object.entries(
+      `<button class="desk-back" data-life-back>← World desk</button><p>Requests are not promises. Accept only what you choose; refusal does not create a missed commitment.</p>${waiting.length ? `<div class="notice-card"><strong>Waiting for room in your day</strong><br>${waiting.map(esc).join("<br>")}</div>` : ""}${Object.entries(
         s.taskPresets,
       )
         .filter(([k]) => available(k) || s.tasks[k] !== "none")
@@ -275,6 +279,7 @@ const Life = (() => {
           "You declined this same request recently. It stays in cooldown until a later game date or a genuinely new situation.",
           "Request cooling down",
         );
+      s.pendingInvitations = s.pendingInvitations.filter((x) => x !== k);
       s.tasks[k] = status;
       m.accepted = s.time;
       m.day = s.day;
@@ -285,11 +290,13 @@ const Life = (() => {
         return artifact();
       }
     } else {
+      s.pendingInvitations = s.pendingInvitations.filter((x) => x !== k);
       s.tasks[k] = status;
       if (status === "declined")
         m.cooldownUntil = abs() + s.settings.cooldown * 60;
       log(`You ${status} the request: ${s.taskPresets[k].title}.`);
     }
+    deliverPendingInvitations();
     save();
     render();
     taskDetail(k);
@@ -464,6 +471,7 @@ const Life = (() => {
       time: s.time,
       status: "open",
     });
+    Plans.pauseAuto("A new event needs your decision.");
     if (s.plan) {
       clearTimeout(planTimer);
       s.plan.status = "paused";
@@ -565,7 +573,10 @@ const Life = (() => {
       s.completedActions.breakfast &&
       !s.completedActions.notebook &&
       !s.events.some((e) => e.title === "A notebook left behind") &&
-      s.time >= s.completedActions.breakfast + 5 &&
+      Calendar.now() >=
+        (s.completedActions.breakfastAt ??
+          (s.day - 1) * 1440 + s.completedActions.breakfast) +
+          5 &&
       s.scene === "Home"
     )
       event(
@@ -581,7 +592,7 @@ const Life = (() => {
       if (
         e.title === "A notebook left behind" &&
         ["ignored", "deferred"].includes(e.status) &&
-        s.time - e.time >= 15 &&
+        Calendar.now() - ((e.day - 1) * 1440 + e.time) >= 15 &&
         !s.completedActions.notebook
       ) {
         s.completedActions.notebook = true;
@@ -615,20 +626,52 @@ const Life = (() => {
         `${p.name} remembers the completed key handover; cooperation improved.`,
       );
     }
+    deliverPendingInvitations();
   }
   function invite(k) {
+    if (!available(k) || !["none", "deferred", "declined"].includes(s.tasks[k]))
+      return false;
+    if (s.pendingInvitations.includes(k)) return false;
     const day = s.invitationDays[s.day] || 0;
     if (
       activeCount() >= s.settings.activeLimit ||
       day >= s.settings.inviteLimit ||
       meta(k).cooldownUntil > abs()
-    )
-      return;
+    ) {
+      s.pendingInvitations.push(k);
+      log(`Invitation deferred until there is room: ${s.taskPresets[k].title}.`);
+      return false;
+    }
+    return publishInvitation(k);
+  }
+  function deliverPendingInvitations() {
+    for (const k of [...s.pendingInvitations]) {
+      if (
+        !available(k) ||
+        !["none", "deferred", "declined"].includes(s.tasks[k])
+      ) {
+        s.pendingInvitations = s.pendingInvitations.filter((x) => x !== k);
+        continue;
+      }
+      const day = s.invitationDays[s.day] || 0;
+      if (
+        activeCount() >= s.settings.activeLimit ||
+        day >= s.settings.inviteLimit ||
+        meta(k).cooldownUntil > abs()
+      )
+        continue;
+      publishInvitation(k);
+      s.pendingInvitations = s.pendingInvitations.filter((x) => x !== k);
+    }
+  }
+  function publishInvitation(k) {
+    const day = s.invitationDays[s.day] || 0;
     s.tasks[k] = "invited";
     s.invitationDays[s.day] = day + 1;
     log(
       `Optional invitation available: ${s.taskPresets[k].title}. No promise was made.`,
     );
+    return true;
   }
   function gate(text, who, replay) {
     const p = s.npcs[who];
@@ -846,6 +889,7 @@ const Life = (() => {
     openEvents,
     tick,
     gate,
+    invite,
     npcInput,
     world,
     afterStep,

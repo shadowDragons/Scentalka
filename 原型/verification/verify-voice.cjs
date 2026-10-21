@@ -1,9 +1,14 @@
 // Controlled browser callback tests. No real microphone, codec, recognition service or audio quality is claimed.
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 const {
   chromium,
 } = require("/Users/junbinzhong/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
 (async () => {
+  const screenshotDir = process.env.VERIFY_SCREENSHOT_DIR || __dirname;
+  fs.mkdirSync(screenshotDir, { recursive: true });
+  const screenshotPath = (name) => path.join(screenshotDir, name);
   const browser = await chromium.launch({
     headless: true,
     executablePath:
@@ -22,6 +27,7 @@ const {
       recognizers: [],
       throwRecognition: false,
       spoken: 0,
+      utterances: [],
     };
     const stream = () => ({
       getTracks: () => [
@@ -74,8 +80,9 @@ const {
       stop() {}
       abort() {}
     };
-    speechSynthesis.speak = () => {
+    speechSynthesis.speak = (utterance) => {
       mockVoice.spoken++;
+      mockVoice.utterances.push(utterance);
     };
     speechSynthesis.cancel = () => {};
     window.Audio = class {
@@ -146,10 +153,10 @@ const {
   await page.locator("#voice-review").click();
   assert.match(await page.locator("#modal").innerText(), /uncertain words/);
   await page.locator("#voice-transcript").fill("Where are you?");
-  await page.screenshot({ path: "原型/verification/voice-review-1440.png" });
+  await page.screenshot({ path: screenshotPath("voice-review-1440.png") });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(250);
-  await page.screenshot({ path: "原型/verification/voice-review-390.png" });
+  await page.screenshot({ path: screenshotPath("voice-review-390.png") });
   assert.equal(
     await page
       .locator("body")
@@ -157,7 +164,9 @@ const {
     false,
   );
   await button("Keep voice draft").scrollIntoViewIfNeeded();
-  await page.screenshot({path:"原型/verification/voice-review-actions-390.png"});
+  await page.screenshot({
+    path: screenshotPath("voice-review-actions-390.png"),
+  });
   await page.keyboard.press("Escape");
   await page.locator("#voice-review").click();
   assert.equal(
@@ -239,7 +248,9 @@ const {
   await page.locator(`[data-queue-play="${id}"]`).click();
   assert.deepEqual(await page.evaluate(() => [mode, contact]), target);
   assert.equal((await state()).messages.Mia.at(-1).known, false);
-  await page.screenshot({ path: "原型/verification/listening-queue-1440.png" });
+  await page.screenshot({
+    path: screenshotPath("listening-queue-1440.png"),
+  });
   await page.keyboard.press("Escape");
   await page.evaluate(() => (mockVoice.permission = "allow"));
   await start();
@@ -248,6 +259,50 @@ const {
   assert.equal(await page.evaluate(() => mockVoice.spoken), spoken);
   await page.keyboard.press("Escape");
   assert.equal(await page.evaluate(() => Voices.busy()), false);
+  await page.evaluate(() => stopPlayback());
+  const partialId = await page.evaluate(() => {
+    npc("Mia", "The meeting starts at noon and bring your passport.", {
+      voice: true,
+    });
+    return s.messages.Mia.at(-1).id;
+  });
+  await page.evaluate((id) => playMessage(id), partialId);
+  await page.waitForFunction(() => mockVoice.utterances.length > 0);
+  await page.evaluate(() => {
+    mockVoice.utterances.at(-1).onboundary({
+      charIndex: "The meeting starts ".length,
+    });
+  });
+  let partial = (await state()).messages.Mia.find((m) => m.id === partialId);
+  assert.equal(partial.known, false);
+  assert.equal(partial.heardText, "The meeting starts");
+  await page.evaluate(() => {
+    selectContact("Mia");
+    setMode("assistant");
+    assistantCommand("What did I hear?");
+  });
+  let assistantReply = (await state()).assistantHistory.at(-1).text;
+  assert.match(assistantReply, /The meeting starts/);
+  assert.match(assistantReply, /rest has not played yet/);
+  assert.doesNotMatch(assistantReply, /noon|passport/);
+  await page.evaluate(() => stopPlayback());
+  await page.evaluate((id) => playMessage(id), partialId);
+  const resumedText = await page.evaluate(() => {
+    const utterance = mockVoice.utterances.at(-1);
+    const text = utterance.text;
+    utterance.onend();
+    return text;
+  });
+  assert.match(resumedText, /^at noon/);
+  partial = (await state()).messages.Mia.find((m) => m.id === partialId);
+  assert.equal(partial.known, true);
+  assert.equal(
+    partial.heardText,
+    "The meeting starts at noon and bring your passport.",
+  );
+  await page.evaluate(() => assistantCommand("What did I hear?"));
+  assistantReply = (await state()).assistantHistory.at(-1).text;
+  assert.match(assistantReply, /noon and bring your passport/);
   await page.evaluate(() => WorldDesk.open("data"));
   await page.locator("#desk-remove-audio").click();
   await button("Remove audio").click();
@@ -256,7 +311,7 @@ const {
   assert.equal((await state()).drafts["npc:Sarah"], before.drafts["npc:Sarah"]);
   assert.deepEqual(errors, []);
   console.log(
-    "PASS simulated voice permission cancel/late stream cleanup, recognition append/confidence/review/edit preservation, text-only send, single audio send/no leaked attachment, recognition startup failure, cancel/late recognition/permission denial, unread listening queue/recipient isolation/recording playback guard, desktop/mobile",
+    "PASS simulated voice permission cancel/late stream cleanup, recognition append/confidence/review/edit preservation, text-only send, single audio send/no leaked attachment, recognition startup failure, cancel/late recognition/permission denial, unread listening queue/recipient isolation/recording playback guard, partial TTS knowledge and resume, desktop/mobile",
   );
   await browser.close();
 })().catch((e) => {

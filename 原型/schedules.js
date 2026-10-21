@@ -288,19 +288,26 @@ const Schedules = (() => {
     const result = [];
     for (const step of steps) {
       const end = cursor + step.minutes;
-      const points = new Set();
+      const points = new Set(Timeline.points(cursor, end));
       for (const q of s.replyQueue) {
         const at = (q.day - 1) * 1440 + q.due;
         if (at > cursor && at < end) points.add(at);
       }
-      for (const at of [...points].sort((a, b) => a - b)) {
+      const sorted = [...points].sort((a, b) => a - b);
+      let partStart = cursor;
+      for (const at of [...sorted, end]) {
+        const finalPart = at === end;
         result.push({
-          minutes: at - cursor,
-          log: "Reached the next scheduled reply checkpoint.",
+          ...step,
+          minutes: at - partStart,
+          scene: finalPart ? step.scene : undefined,
+          area: finalPart ? step.area : undefined,
+          effect: finalPart ? step.effect : undefined,
+          event: finalPart ? step.event : undefined,
+          log: finalPart ? step.log : "Reached a scheduled world checkpoint.",
         });
-        cursor = at;
+        partStart = at;
       }
-      result.push({ ...step, minutes: end - cursor });
       cursor = end;
     }
     return result;

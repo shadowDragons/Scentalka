@@ -252,6 +252,7 @@ function load(key) {
   Voices.normalize(s);
   Commitments.normalize(s);
   Plans.normalize(s);
+  Timeline.normalize(s);
   WorldDesk.hydrate();
   if (s.plan?.status === "running") s.plan.status = "paused";
   mode = s.fixture === "road" ? "world" : "npc";
@@ -365,10 +366,10 @@ function render() {
   $("role").textContent = s.roles[s.scene];
   $("map-you").textContent = `You · ${s.area}`;
   $("clock-status").innerHTML =
-    `<i></i> ${s.plan?.status === "running" ? "Action in progress" : "Time is paused"}`;
+    `<i></i> ${s.plan?.status === "running" || s.itinerary?.autoRun ? "Action in progress" : "Time is paused"}`;
   $("feedback").textContent = s.feedback;
   $("feedback-label").textContent = s.feedbackTitle.toUpperCase();
-  $("stop-plan").hidden = s.plan?.status !== "running";
+  $("stop-plan").hidden = s.plan?.status !== "running" && !s.itinerary?.autoRun;
   $("scene-note").textContent =
     s.plan?.status === "interrupted"
       ? "Your route is paused · A new message is waiting"
@@ -474,7 +475,12 @@ function renderMessages() {
         html += `<div class="message-tools"><button data-bookmark="${m.id}" aria-label="Save this expression">Save expression</button>${mode === "assistant" && !own ? `<button data-assistant-play="${m.id}">Listen</button>` : ""}</div>`;
       html += "</div>";
     }
-    html += `<div class="message-meta"><span>${time(m.time)}</span><span>·</span><span>${own ? "Delivered" : m.type === "voice" ? (m.known ? "Listened / transcript viewed" : "Voice · Tap to listen") : m.opened === false ? "Delivered" : "Viewed"}</span></div></div>`;
+    const voiceStatus = m.known
+      ? "Listened / transcript viewed"
+      : m.heardText
+        ? "Partially heard"
+        : "Voice · Tap to listen";
+    html += `<div class="message-meta"><span>${time(m.time)}</span><span>·</span><span>${own ? "Delivered" : m.type === "voice" ? voiceStatus : m.opened === false ? "Delivered" : "Viewed"}</span></div></div>`;
   }
   chat.innerHTML = html;
   chat.scrollTop = chat.scrollHeight;
@@ -704,7 +710,7 @@ function planStart(label, steps, kind = "travel") {
   if (kind === "travel" && /hospital/i.test(label)) Life.routeStarted();
   s.plan = {
     label,
-    steps: kind === "wait" ? Schedules.split(steps) : steps,
+    steps,
     kind,
     status: "running",
     started: s.time,
@@ -734,15 +740,24 @@ function planNext() {
         feedback("You have reached the end of the plan.", "Plan finished");
         return;
       }
-      advance(step.minutes);
-      if (step.scene) {
-        s.scene = step.scene;
-        s.area = step.area;
-      }
-      if (step.scene)
+      const part = Timeline.slice(step);
+      const current = part.current;
+      if (part.remaining) p.steps.unshift(part.remaining);
+      advance(current.minutes);
+      if (current.scene) {
+        s.scene = current.scene;
+        s.area = current.area;
         s.roles[s.scene] = s.settings[s.scene.toLowerCase() + "Role"];
-      Life.afterStep(step);
-      if (step.event) {
+      }
+      Life.afterStep(current);
+      Timeline.arrived(part.events);
+      if (p.status !== "running") {
+        if (!p.steps.length) s.plan = null;
+        save();
+        render();
+        return;
+      }
+      if (current.event) {
         s.roadEvent = true;
         makeKnown("Ben");
         npc(
@@ -751,6 +766,7 @@ function planNext() {
           { opened: false },
         );
         p.status = "interrupted";
+        Plans.pauseAuto("A route event needs your decision.");
         if (!s.events.some((e) => e.source === "Ben · transport service"))
           s.events.push({
             id: crypto.randomUUID(),
@@ -771,18 +787,14 @@ function planNext() {
         );
         return;
       }
-      log(step.log || `${p.label}: checkpoint at ${time(s.time)}.`);
-      if (p.status === "paused") {
-        save();
-        render();
-        return;
-      }
+      log(current.log || `${p.label}: checkpoint at ${time(s.time)}.`);
       if (!p.steps.length) {
         s.plan = null;
         feedback(
-          step.done || `Arrived at ${s.scene} · ${s.area}.`,
+          current.done || `Arrived at ${s.scene} · ${s.area}.`,
           "Action complete",
         );
+        Plans.afterAction();
       } else {
         feedback(
           `Checkpoint reached at ${time(s.time)}. The plan is still running. Press Escape to stop.`,
@@ -795,6 +807,7 @@ function planNext() {
   );
 }
 function pausePlan(reason) {
+  Plans.pauseAuto(reason);
   if (s.plan?.status === "running") {
     clearTimeout(planTimer);
     s.plan.status = "paused";
@@ -807,6 +820,7 @@ function pausePlan(reason) {
   }
 }
 function cancelPlan() {
+  Plans.pauseAuto("Remaining action cancelled.");
   if (!s.plan) {
     feedback("There is no remaining plan to cancel.");
     return;
@@ -1334,6 +1348,7 @@ function pendingExchange() {
 function learnMessage(m, k) {
   m.known = true;
   m.seen = true;
+  if (m.type === "voice") m.heardText = m.text;
   if (WorldDesk.behavior(k) === "Ben" && s.roadEvent && /delay/.test(m.text))
     s.busDelayRead = true;
   if (WorldDesk.behavior(k) === "Grace" && s.called) s.callRead = true;
@@ -1347,7 +1362,7 @@ function learnMessage(m, k) {
     s.tasks.key === "none" &&
     /house key/.test(m.text)
   )
-    s.tasks.key = "invited";
+    Life.invite("key");
 }
 function npcCommand(text, replay = false) {
   if (Life.gate(text, contact, replay)) return;
@@ -1366,6 +1381,32 @@ function npcCommand(text, replay = false) {
   if (!replay) {
     delete s.voiceDrafts[`npc:${actualWho}`];
     delete s.voiceReviews[`npc:${actualWho}`];
+  }
+  if (
+    !replay &&
+    /^(end|finish|close) (this )?(conversation|exchange|discussion|topic)[.!]?$/i.test(
+      text.trim(),
+    )
+  ) {
+    const cost = s.pending;
+    s.pending = 0;
+    if (!cost) {
+      feedback(
+        "There is no uncommitted conversation time. Your clock did not move.",
+        "Nothing to settle",
+      );
+      return;
+    }
+    commit(cost, () => {
+      feedback(
+        `This conversation segment is complete. ${cost} game minute${cost === 1 ? "" : "s"} settled once.`,
+        "Conversation complete",
+      );
+      log(
+        `Conversation segment with ${personName(actualWho)} settled for ${cost} game minute${cost === 1 ? "" : "s"}.`,
+      );
+    });
+    return;
   }
   if (Life.npcInput(text, replay)) return;
   if (s.voiceDrafts) delete s.voiceDrafts[`npc:${who}`];
@@ -1525,7 +1566,7 @@ function npcCommand(text, replay = false) {
       if (s.items.key === WorldDesk.route("Sarah"))
         npc(who, "Yes, you gave it to me at the entrance. I still have it.");
       else {
-        if (s.tasks.key === "none") s.tasks.key = "invited";
+        if (s.tasks.key === "none") Life.invite("key");
         npc(
           who,
           "Yes, I need it this morning. Could you hand it to me at the entrance? It’s on the tray.",
@@ -1821,12 +1862,17 @@ function assistantCommand(text) {
   else if (/how.*(say|ask)|help.*(ask|say|key)|phrase|expression/.test(t))
     reply =
       "You could say: “Do you need the house key this morning?”\nIf you choose to make a promise: “I’ll bring it to you now.”\nThese are suggestions. Switch to Sarah’s IM and write your own message to send it.";
-  else if (/repeat|explain|mean|message/.test(t)) {
+  else if (
+    /repeat|explain|mean|message|what.*(hear|listen|say)|heard/.test(t)
+  ) {
     const known = (s.messages[contact] || []).filter(
-      (m) => m.from === "npc" && m.known,
+      (m) => m.from === "npc" && (m.known || m.heardText),
     );
-    reply = known.length
-      ? `The last message you viewed from ${personName(contact)} says: “${known.at(-1).text}”\nYou can ask the NPC for clarification in your own words. A viewed message does not mean you have agreed to it.`
+    const last = known.at(-1);
+    reply = last
+      ? last.known
+        ? `The last message you viewed from ${personName(contact)} says: “${last.text}”\nYou can ask the NPC for clarification in your own words. A viewed message does not mean you have agreed to it.`
+        : `You heard this part of ${personName(contact)}’s voice message: “${last.heardText}”\nThe rest has not played yet, so I don’t know what it says. Resume the message or show its transcript to hear the full message.`
       : "You have not read or listened to a message in this conversation yet. Open it or show its transcript first.";
   } else if (
     /yesterday|remember|record|key/.test(t) &&
@@ -1870,6 +1916,7 @@ function submit(event) {
     return;
   }
   if (mode === "npc" && Life.gate(text, contact, false)) return;
+  pausePlan("Your new input paused the remaining itinerary.");
   const submittedKey = activeDraftKey();
   Voices.release(submittedKey);
   s.drafts[submittedKey] = "";
@@ -2270,6 +2317,7 @@ function playMessage(id) {
     m.playbackSeconds = 0;
     m.playbackChar = 0;
     m.listened = true;
+    m.heardText = m.text;
     learnMessage(m, k);
     playingId = null;
     save();
@@ -2317,8 +2365,13 @@ function playMessage(id) {
   u.voice = voices.find((v) => v.voiceURI === p.voice) || voices[0] || null;
   u.onboundary = (e) => {
     if (playingId === id) {
-      m.playbackChar = offset + e.charIndex;
+      const boundary = Number.isFinite(e.charIndex)
+        ? Math.max(0, Math.min(u.text.length, e.charIndex))
+        : 0;
+      m.playbackChar = offset + boundary;
+      m.heardText = m.text.slice(0, m.playbackChar).trimEnd();
       save();
+      renderMessages();
     }
   };
   u.onstart = () => renderMessages();
@@ -2431,7 +2484,7 @@ document.addEventListener("keydown", (e) => {
   const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName);
   if (e.key === "Escape") {
     if ($("modal").open) return;
-    if (s.plan?.status === "running") {
+    if (s.plan?.status === "running" || s.itinerary?.autoRun) {
       e.preventDefault();
       pausePlan();
       return;

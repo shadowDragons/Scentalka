@@ -24,7 +24,7 @@ python3 -m http.server 8766 --bind 127.0.0.1 --directory 原型
 
 左侧 **Desk** 已增加三个可直接试玩的入口：
 
-- **Your itinerary**：已有三步示例，编辑 → 预览 → 保存 → 每次 Run next step 执行一项。支持明确移动、拿取/放置/钥匙交付、限定分钟等待、家务和 `Message Sarah: your exact words`。发信步骤只准备草稿，自己按 Send。未知步骤阻止整份保存；已完成步骤和修改前计划留存，刷新不重演。
+- **Your itinerary**：已有三步示例，编辑 → 预览 → 保存。可逐项 Run next step，也可明确选择 Run remaining steps 连续执行受支持的行动。途中遇到已排定回复、预约/任务节点、事件、条件变化或 IM 草稿时会暂停并保留余程；消息只准备草稿，自己按 Send。未知步骤阻止整份保存；已完成步骤和修改前计划留存，刷新不重演。
 - **Hospital standby**：在 Reception 携 ID 后，准备并发送加入候补请求。三人上限、最长 30 游戏分钟、不跨闭院。等待 5 游戏分钟后按真实可用样例槽发送时段提议；先读时段提议，再明确接受。时段提议 5 分钟内不接受即失效。停止等待与退队是两件事，原预约不会被默默取消。
 - **Promises & follow-ups**：钥匙晨间请求默认截止 12:00，可在未接受任务中编辑。接受后 IM `Please change the key handover to 14:00 today.` 明确协商延期。失约后 `Please arrange a new key handover at 09:00 tomorrow.` 建立独立后续，实际补交也不会抹去原失败。旧存档缺失的接受日期不编造补齐。
 
@@ -42,6 +42,7 @@ python3 -m http.server 8766 --bind 127.0.0.1 --directory 原型
 左侧 **Desk** 或 World `Open world desk.` 打开统一入口：
 
 - **You & your roles / Begin a new story**：资料、背景、目标、各场景身份；独立新世界可修改初始物品位置，旧世界保留。
+- **World timeline**：查看游戏时钟、已知的回复/预约/任务/候补节点、当前计划余程与最近的中断原因。未知的私人日程和未读消息内容不会显示；打开时间线会暂停正在执行的计划。
 - **People in your world**：全部 NPC 资料、音色、精灵形象、地点与班次；添加、归档与必要职责交接。私人记忆和旧 IM 不复制给继任人。
 - **Tasks & written work**：六项任务详情、接受/拒绝/推迟、未接受任务文案编辑；就诊后英文总结的草稿、预览、提交、退回修订与不可编辑版本。
 - **Today’s arrangements / World pace**：可用时段、预约/改约草稿、营业与班次冲突检查；完整节奏参数预览。
@@ -55,7 +56,9 @@ python3 -m http.server 8766 --bind 127.0.0.1 --directory 原型
 
 顶栏快捷键说明里 **Customize keys** 可改键。输入框外 H/J/I/C/E/G 分别为助手、记录、物品、联系人、事件、Desk；按住 Space 录音，松开停止并检查草稿，Escape 取消，Ctrl+. 始终停止计划。原 Alt 快捷键保留。自动识别只追加到已有文字草稿，发送仍需用户确认。
 
-语音开始播放不再等于听完整条；完整结束或查看转写才获取全文信息。播放中断保存进度；TTS 断点依赖浏览器边界回调，续播可能重复当前词。地图人物读取当前配置与每日多段日程，忙碌状态有标记。
+语音开始播放不再等于听完整条；TTS 边界之前的文字可供助手有限引用，助手会说明后文尚未听到；完整结束或查看转写才获取全文信息。播放中断保存进度；TTS 断点依赖浏览器边界回调，续播可能重复当前词。没有词级对齐信息的真实音频无法准确恢复部分听取文字。地图人物读取当前配置与每日多段日程，忙碌状态有标记。
+
+NPC 普通交流以一个待结算片段累计；切换联系人、查看状态或向助手求助不结算。提交等待/移动等世界行动前会结算一次，也可在 NPC IM 发送 `End this conversation.` 明确结束片段。按事项自动分段和跨话题归属仍受本地规则限制。
 
 ### 直接试流程
 
@@ -166,7 +169,7 @@ Walk to the hospital instead.
 
 ## 真实能力边界
 
-这是可交互的设计原型，NPC 回复使用有限的本地解析规则，**没有接入真实 AI、后端或付费语音服务**。不认识的指令会说明可演示范围。完整自由对话、通用多日自主成长、复杂任务配置、连续自动执行的通用计划、真实多患者资源调度与生产级故障恢复仍需继续实现。当前多步计划按步骤明确确认，候补前两位是本地样例，截止/新后续以钥匙任务验证。全部 NPC 的资料编辑和受约束的归档交接已有本地可操作流程；不代表完整依赖图已经实现。
+这是可交互的设计原型，NPC 回复使用有限的本地解析规则，**没有接入真实 AI、后端或付费语音服务**。不认识的指令会说明可演示范围。完整自由对话、通用多日自主成长、复杂任务配置、真实多患者资源调度与生产级故障恢复仍需继续实现。已明确支持的多步计划可逐项确认，或由用户明确选择连续执行；遇到事件、条件变化或需用户发送的消息会暂停。候补前两位是本地样例，截止/新后续以钥匙任务验证。全部 NPC 的资料编辑和受约束的归档交接已有本地可操作流程；不代表完整依赖图已经实现。
 
 NPC 语音由浏览器可用的英语声音合成；每条消息独立决定语音或文字，保存后不再随机变化。人物声音在当前设备的可用列表中固定分配；不同浏览器不保证相同音色。
 
@@ -176,7 +179,7 @@ NPC 语音由浏览器可用的英语声音合成；每条消息独立决定语�
 
 ## 文件与验证
 
-- `Scentalka Prototype.html`：入口；`styles.css`：视觉系统；`world.js`：地图；`app.js`：本地状态与原有交互；`flows.js`：示例；`desk.js`：世界/NPC；`records.js`：学习/隐私；`life.js`：任务/服务/事件；`actions.js`：生活行为/每日循环/助手；`presets.js`：新建/物品/独立样例；`controls.js`：键位/恢复；`plans.js`：可保存计划与检查点；`calendar.js`：按日预约/候补；`commitments.js`：截止/重新协商/独立后续；`schedules.js`：多段日程/回复检查点；`objects.js`：有限物品/遗落；`voice.js`：可取消录音/检查/收听队列。
+- `Scentalka Prototype.html`：入口；`styles.css`：视觉系统；`world.js`：地图；`app.js`：本地状态与原有交互；`flows.js`：示例；`desk.js`：世界/NPC；`records.js`：学习/隐私；`life.js`：任务/服务/事件；`actions.js`：生活行为/每日循环/助手；`presets.js`：新建/物品/独立样例；`controls.js`：键位/恢复；`plans.js`：可保存计划与检查点；`timeline.js`：世界时间边界与时间线；`calendar.js`：按日预约/候补；`commitments.js`：截止/重新协商/独立后续；`schedules.js`：多段日程/回复检查点；`objects.js`：有限物品/遗落；`voice.js`：可取消录音/检查/收听队列。
 - `design-brief.md`、`brand-spec.md`、`product-facts.md`：设计依据、素材与范围说明。
 - `verification/`：Playwright 交互脚本及验证截图。
 - 素材：Kenney Roguelike Indoors / Modern City / Characters，CC0；字体 DM Sans / Instrument Serif，OFL。许可保留在 `assets/`。

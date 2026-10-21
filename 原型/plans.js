@@ -2,6 +2,7 @@
 const Plans = (() => {
   function normalize(st) {
     st.itineraryHistory ??= [];
+    if (st.itinerary?.autoRun) st.itinerary.autoRun = false;
     if (st.itinerary?.status === "executing") st.itinerary.status = "paused";
     return st;
   }
@@ -85,7 +86,7 @@ const Plans = (() => {
         : "Go to the entrance.\nTake the house key.\nGive the key to Sarah.");
     showModal(
       "Make a little room for a plan",
-      `<p>One step per line, up to eight. Use supported movement, take / put / give, a bounded wait or household activity. For an IM step: <strong>Message Sarah: your exact words</strong>. IM steps only prepare a draft; you press Send.</p><label class="writing-label">Remaining steps<textarea id="plan-editor" rows="6" maxlength="1500">${esc(initial)}</textarea></label><p class="desk-note">Completed steps stay in the record. Unsupported steps block the whole preview. Each next step needs your explicit Run next step; a changed condition or an event stops execution.</p>`,
+      `<p>One step per line, up to eight. Use supported movement, take / put / give, a bounded wait or household activity. For an IM step: <strong>Message Sarah: your exact words</strong>. IM steps only prepare a draft; you press Send.</p><label class="writing-label">Remaining steps<textarea id="plan-editor" rows="6" maxlength="1500">${esc(initial)}</textarea></label><p class="desk-note">Completed steps stay in the record. Unsupported steps block the whole preview. Run one step at a time or explicitly choose Run remaining steps. Changed conditions, message drafts and events return control to you.</p>`,
       [
         { label: "Back", action: open },
         {
@@ -167,7 +168,7 @@ const Plans = (() => {
       step = active();
     showModal(
       "One step, then the next",
-      `<button class="desk-back" id="plan-back">← World desk</button><p>Your itinerary pauses between steps. Completed actions remain real if you edit or cancel the rest.</p>${p ? `<span class="status-chip">${esc(p.status)}</span><ol class="plan-list">${p.steps.map((x) => `<li><strong>${esc(x.command)}</strong><small>${esc(x.status)}${x.reason ? ` · ${esc(x.reason)}` : ""}${x.done ? ` · Day ${x.done.day} ${time(x.done.time)}` : ""}</small></li>`).join("")}</ol>` : '<div class="notice-card">No saved itinerary yet. Start with a complete example and change it.</div>'}${s.itineraryHistory.length ? `<p class="desk-note">${s.itineraryHistory.length} previous plan version(s) retained. Your Journal keeps committed action details.</p>` : ""}`,
+      `<button class="desk-back" id="plan-back">← World desk</button><p>Run next step confirms one action. Run remaining steps continues supported actions, stopping for message drafts, changed conditions or events. Completed actions remain real if you edit or cancel the rest.</p>${p ? `<span class="status-chip">${esc(p.status)}</span><ol class="plan-list">${p.steps.map((x) => `<li><strong>${esc(x.command)}</strong><small>${esc(x.status)}${x.reason ? ` · ${esc(x.reason)}` : ""}${x.done ? ` · Day ${x.done.day} ${time(x.done.time)}` : ""}</small></li>`).join("")}</ol>` : '<div class="notice-card">No saved itinerary yet. Start with a complete example and change it.</div>'}${s.itineraryHistory.length ? `<p class="desk-note">${s.itineraryHistory.length} previous plan version(s) retained. Your Journal keeps committed action details.</p>` : ""}`,
       [
         {
           label: p ? "Edit remaining steps" : "Create itinerary",
@@ -186,6 +187,9 @@ const Plans = (() => {
                 action: () => run(),
               },
             ]
+          : []),
+        ...(step && p.status !== "cancelled" && step.status !== "draft ready"
+          ? [{ label: "Run remaining steps", action: runRemaining }]
           : []),
         ...(p && !["completed", "cancelled"].includes(p.status)
           ? [{ label: "Cancel remaining itinerary", action: cancel }]
@@ -206,6 +210,7 @@ const Plans = (() => {
       return;
     }
     if (step.status === "draft ready") {
+      p.autoRun = false;
       prepareMessage(step);
       return;
     }
@@ -235,6 +240,15 @@ const Plans = (() => {
     worldCommand(step.command);
     observe();
     save();
+    if (
+      step.status === "completed" &&
+      p.autoRun &&
+      !s.plan &&
+      !$("modal").open
+    ) {
+      setTimeout(run, 0);
+      return;
+    }
     if (step.status === "executing" && !s.plan && !$("modal").open) {
       step.status = "blocked";
       p.status = "paused";
@@ -242,6 +256,24 @@ const Plans = (() => {
       save();
       open();
     }
+  }
+  function runRemaining() {
+    if (s.plan) {
+      feedback(
+        "Finish or stop the current action before running the itinerary.",
+      );
+      return;
+    }
+    s.itinerary.autoRun = true;
+    run();
+  }
+  function pauseAuto() {
+    if (s?.itinerary) s.itinerary.autoRun = false;
+  }
+  function afterAction() {
+    observe();
+    if (s?.itinerary?.autoRun && active() && !s.plan && !$("modal").open)
+      setTimeout(run, 0);
   }
   function prepareMessage(step) {
     const who = step.action.who;
@@ -299,9 +331,8 @@ const Plans = (() => {
       step.status = "completed";
       step.done = { day: s.day, time: s.time };
       p.status = active() ? "ready" : "completed";
-      log(
-        `Itinerary checkpoint recorded: ${step.command}. Remaining steps require your next instruction.`,
-      );
+      if (!active()) p.autoRun = false;
+      log(`Itinerary checkpoint recorded: ${step.command}.`);
       save();
     }
   }
@@ -341,5 +372,5 @@ const Plans = (() => {
     }
     return false;
   }
-  return { normalize, open, preview, observe, world };
+  return { normalize, open, preview, observe, world, pauseAuto, afterAction };
 })();
