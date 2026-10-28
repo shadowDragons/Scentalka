@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "preferences": {
+    "destination": {
+      "value": "website",
+      "confirmed_in": [
+        "scentalka-tour"
+      ],
+      "updated_at": "2026-10-21T15:36:26.569Z"
+    },
+    "aspect": {
+      "value": "1920x1080",
+      "confirmed_in": [
+        "scentalka-tour"
+      ],
+      "updated_at": "2026-10-21T15:36:26.614Z"
+    },
+    "language": {
+      "value": "en",
+      "confirmed_in": [
+        "scentalka-tour"
+      ],
+      "updated_at": "2026-10-21T15:36:26.659Z"
+    },
+    "style_preset.product-launch-video": {
+      "value": "editorial-forest",
+      "confirmed_in": [
+        "scentalka-tour"
+      ],
+      "updated_at": "2026-10-21T15:46:25.872Z"
+    }
+  },
+  "sightings": {}
+}

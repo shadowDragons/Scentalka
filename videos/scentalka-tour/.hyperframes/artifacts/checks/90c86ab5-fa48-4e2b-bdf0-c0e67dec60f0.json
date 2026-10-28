@@ -1,0 +1,256 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "filesScanned": 9
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 5,
+    "findings": [
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 6.32,
+        "selector": "#el-01-start-world > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 96,
+          "top": 58,
+          "right": 470.45,
+          "bottom": 87,
+          "width": 374.45,
+          "height": 29
+        },
+        "containerSelector": "#el-02-make-it-yours > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(1)",
+        "text": "SCENTALKA / FIRST STEPS",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {
+          "data-hf-id": "hf-x4op"
+        },
+        "sourceFile": "compositions/frames/01-start-world.html",
+        "bbox": {
+          "x": 96,
+          "y": 58,
+          "width": 374.45,
+          "height": 29
+        },
+        "firstSeen": 6.32,
+        "lastSeen": 6.32,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          6.32
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 6.32,
+        "selector": "#el-01-start-world > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(2)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1779.86,
+          "top": 79.5,
+          "right": 1796.14,
+          "bottom": 108.5,
+          "width": 16.28,
+          "height": 29
+        },
+        "containerSelector": "#el-02-make-it-yours > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(2)",
+        "text": "S",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {
+          "data-hf-id": "hf-obm7"
+        },
+        "sourceFile": "compositions/frames/01-start-world.html",
+        "bbox": {
+          "x": 1779.86,
+          "y": 79.5,
+          "width": 16.28,
+          "height": 29
+        },
+        "firstSeen": 6.32,
+        "lastSeen": 6.32,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          6.32
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 6.32,
+        "selector": "#el-01-start-world > div:nth-of-type(1) > div:nth-of-type(10) > span:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 110,
+          "top": 985,
+          "right": 487.28,
+          "bottom": 1008,
+          "width": 377.28,
+          "height": 23
+        },
+        "containerSelector": "#el-02-make-it-yours > div:nth-of-type(1) > div:nth-of-type(8) > span:nth-of-type(1)",
+        "text": "SETUP → SCENE → FIRST ACTION",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {
+          "data-hf-id": "hf-ssry"
+        },
+        "sourceFile": "compositions/frames/01-start-world.html",
+        "bbox": {
+          "x": 110,
+          "y": 985,
+          "width": 377.28,
+          "height": 23
+        },
+        "firstSeen": 6.32,
+        "lastSeen": 6.32,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          6.32
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 6.32,
+        "selector": "#el-01-start-world > div:nth-of-type(1) > div:nth-of-type(10) > span:nth-of-type(2)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1719.27,
+          "top": 985,
+          "right": 1810,
+          "bottom": 1008,
+          "width": 90.73,
+          "height": 23
+        },
+        "containerSelector": "#el-02-make-it-yours > div:nth-of-type(1) > div:nth-of-type(8) > span:nth-of-type(2)",
+        "text": "01 / 08",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {
+          "data-hf-id": "hf-5ued"
+        },
+        "sourceFile": "compositions/frames/01-start-world.html",
+        "bbox": {
+          "x": 1719.27,
+          "y": 985,
+          "width": 90.73,
+          "height": 23
+        },
+        "firstSeen": 6.32,
+        "lastSeen": 6.32,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          6.32
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 64.045,
+        "selector": "#el-07-keep-records > div:nth-of-type(1) > div:nth-of-type(3)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 104.91,
+          "top": 195.97,
+          "right": 890.7,
+          "bottom": 300.98,
+          "width": 785.79,
+          "height": 105.01
+        },
+        "containerSelector": "#el-08-voice-review > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(1)",
+        "text": "What happened stays visible.",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {
+          "data-hf-id": "hf-b3rp"
+        },
+        "sourceFile": "compositions/frames/07-keep-records.html",
+        "bbox": {
+          "x": 104.91,
+          "y": 195.97,
+          "width": 785.79,
+          "height": 105.01
+        },
+        "firstSeen": 64.045,
+        "lastSeen": 64.045,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          64.045
+        ]
+      }
+    ],
+    "duration": 75,
+    "samples": [
+      4.167,
+      12.5,
+      20.833,
+      29.167,
+      37.5,
+      45.833,
+      54.167,
+      62.5,
+      70.833
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 5,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      4.167,
+      20.833,
+      37.5,
+      54.167,
+      70.833
+    ],
+    "checked": 41,
+    "passed": 41
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

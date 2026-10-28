@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Scentalka — A little more life, in English</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="styles.css?v=20261019-routines-final2" />
+    <link rel="stylesheet" href="styles.css?v=20261027-inline-guide1" />
   </head>
   <body>
     <!-- A / Everyday Story. Temporary wordmark. Local simulation; see README.md and product-facts.md.
@@ -19,72 +19,83 @@ Chat, world actions and assistance have separate persistent drafts and explicit 
           aria-label="Scentalka home"
           >scentalka<span> / </span></a
         >
-        <span class="tagline">A little more life, in English.</span>
+        <span class="tagline" data-i18n="tagline">A little more life, in English.</span>
         <div class="top-actions">
-          <span class="saved"><i></i> Saved on this device</span
-          ><button
+          <button class="icon-button" id="guide-button" aria-label="Open page guide" title="Page guide" data-i18n-aria="guide.open" data-i18n-title="guide.title">
+            <span data-icon="leaf"></span>
+          </button>
+          <span class="saved"><i></i> <span data-i18n="saved">Saved on this device</span></span>
+          <button id="language-toggle" class="language-toggle" type="button" aria-label="Switch language" title="Switch language">中文</button>
+          <button
             class="icon-button"
             id="shortcuts"
             aria-label="Keyboard shortcuts"
+            data-i18n-aria="shortcuts.open"
           >
             ⌘</button
           ><button
             id="settings"
             class="profile"
             aria-label="Open world settings"
+            data-i18n-aria="settings.open"
           >
             C
           </button>
         </div>
       </header>
       <div class="workspace">
-        <nav class="rail" aria-label="World navigation">
+        <nav class="rail" aria-label="World navigation" data-i18n-aria="nav.world">
           <button
             class="rail-button selected"
             data-panel="world"
             aria-label="World"
+            data-i18n-aria="nav.world"
             title="World (Alt+W)"
           >
-            <span data-icon="world"></span><small>World</small>
+            <span data-icon="world"></span><small data-i18n="nav.world">World</small>
           </button>
           <button
             class="rail-button"
             data-panel="tasks"
             aria-label="Tasks"
+            data-i18n-aria="nav.tasks"
             title="Tasks (Alt+T)"
           >
-            <span data-icon="tasks"></span><small>Tasks</small
+            <span data-icon="tasks"></span><small data-i18n="nav.tasks">Tasks</small
             ><b id="task-count"></b>
           </button>
           <button
             class="rail-button"
             data-panel="pocket"
             aria-label="Pocket"
+            data-i18n-aria="nav.pocket"
             title="Pocket (Alt+I)"
           >
-            <span data-icon="bag"></span><small>Pocket</small>
+            <span data-icon="bag"></span><small data-i18n="nav.pocket">Pocket</small>
           </button>
           <button
             class="rail-button"
             data-panel="journal"
             aria-label="Journal"
+            data-i18n-aria="nav.journal"
             title="Journal (Alt+J)"
           >
-            <span data-icon="journal"></span><small>Journal</small>
+            <span data-icon="journal"></span><small data-i18n="nav.journal">Journal</small>
           </button>
-          <button class="rail-button" id="world-desk" aria-label="World desk">
-            <span data-icon="directory"></span><small>Desk</small>
+          <button class="rail-button" id="world-desk" aria-label="World desk" data-i18n-aria="nav.desk">
+            <span data-icon="directory"></span><small data-i18n="nav.desk">Desk</small>
           </button>
           <div class="rail-spacer"></div>
           <button
             class="rail-button"
             id="open-review"
             aria-label="Prototype studio"
+            data-i18n-aria="nav.studio"
           >
-            <span data-icon="sliders"></span><small>Studio</small>
+            <span data-icon="sliders"></span><small data-i18n="nav.studio">Studio</small>
           </button>
-          <button class="rail-button" id="end-day" aria-label="End the day">
-            <span data-icon="moon"></span><small>Day end</small>
+          <button class="rail-button" id="end-day" aria-label="End the day" data-i18n-aria="nav.dayEnd">
+            <span data-icon="moon"></span><small data-i18n="nav.dayEnd">Day end</small>
           </button>
         </nav>
         <main class="game">
@@ -152,12 +163,14 @@ Chat, world actions and assistance have separate persistent drafts and explicit 
         </main>
         <aside class="messenger" aria-label="Messages">
           <div class="messenger-heading">
-            <h2>Conversations</h2>
+            <h2 data-i18n="conversations.title">Conversations</h2>
             <button
               id="directory"
               class="icon-button"
               aria-label="Public service directory"
               title="Public service directory"
+              data-i18n-aria="directory.open"
+              data-i18n-title="directory.title"
             >
               <span data-icon="directory"></span>
             </button>
@@ -166,7 +179,7 @@ Chat, world actions and assistance have separate persistent drafts and explicit 
           <div class="chat-heading" id="chat-heading"></div>
           <div class="chat-scroll" id="chat-scroll" aria-live="polite"></div>
           <div class="chat-footnote" id="chat-footnote">
-            Only you choose what to say.
+            <span data-i18n="chat.onlyYou">Only you choose what to say.</span>
           </div>
         </aside>
         <section class="composer" aria-label="Command and message input">
@@ -175,12 +188,13 @@ Chat, world actions and assistance have separate persistent drafts and explicit 
               class="context-tabs"
               role="tablist"
               aria-label="Input destination"
+              data-i18n-aria="composer.destination"
             >
-              <button role="tab" data-mode="world">World <kbd>1</kbd></button
+              <button role="tab" data-mode="world"><span data-i18n="nav.world">World</span> <kbd>1</kbd></button
               ><button role="tab" data-mode="npc" class="active">
                 <span id="npc-tab-name">Sarah</span> <kbd>2</kbd></button
               ><button role="tab" data-mode="assistant">
-                Assistant <kbd>3</kbd>
+                <span data-i18n="composer.assistant">Assistant</span> <kbd>3</kbd>
               </button>
             </div>
             <span id="composer-target">MESSAGE TO SARAH · PRIVATE IM</span
@@ -190,6 +204,7 @@ Chat, world actions and assistance have separate persistent drafts and explicit 
             id="flow-examples"
             class="flow-examples"
             aria-label="Optional flow examples"
+            data-i18n-aria="flow.examples"
           ></div>
           <form id="input-form">
             <button
@@ -197,6 +212,7 @@ Chat, world actions and assistance have separate persistent drafts and explicit 
               id="mic-button"
               class="mic-button"
               aria-label="Record an English message or command"
+              data-i18n-aria="composer.record"
               title="Record / stop (Alt+M)"
             >
               <span data-icon="mic"></span></button
@@ -207,12 +223,12 @@ Chat, world actions and assistance have separate persistent drafts and explicit 
               placeholder="Say what’s on your mind…"
               maxlength="1500"
             /><button type="submit" id="send-button">
-              Send <span data-icon="arrow"></span>
+              <span data-i18n="composer.send">Send</span> <span data-icon="arrow"></span>
             </button>
           </form>
           <div class="composer-hints">
             <button type="button" id="voice-review" class="text-button" hidden>
-              Review voice draft</button
+              <span data-i18n="composer.reviewVoice">Review voice draft</span></button
             ><span id="input-hint">Your words are sent exactly as written.</span
             ><span
               ><kbd>Enter</kbd> send <span>·</span> <kbd>Alt</kbd> +
@@ -239,6 +255,7 @@ Chat, world actions and assistance have separate persistent drafts and explicit 
     <script src="life.js?v=20261019-timeline1"></script>
     <script src="controls.js?v=20261019-timeline1"></script>
     <script src="presets.js?v=20261019-timeline1"></script>
-    <script src="app.js?v=20261019-timeline1"></script>
+    <script src="guide.js?v=20261027-i18n-setup1"></script>
+    <script src="app.js?v=20261027-i18n3"></script>
   </body>
 </html>

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "preferences": {
+    "flow": {
+      "value": "automation",
+      "confirmed_in": [
+        "scentalka-tour"
+      ],
+      "updated_at": "2026-10-21T15:33:02.961Z"
+    },
+    "storyboard": {
+      "value": "yes",
+      "confirmed_in": [
+        "scentalka-tour"
+      ],
+      "updated_at": "2026-10-21T15:33:03.003Z"
+    }
+  },
+  "sightings": {}
+}

@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Scentalka — A little more life, in English</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="styles.css?v=20261021-setup-tour1" />
+  </head>
+  <body>
+    <!-- A / Everyday Story. Temporary wordmark. Local simulation; see README.md and product-facts.md.
+The scene is the primary content. Player movement only follows typed or spoken commands.
+Chat, world actions and assistance have separate persistent drafts and explicit recipients. -->
+    <div class="app">
+      <header class="topbar">
+        <a
+          href="./Scentalka%20Prototype.html"
+          class="wordmark"
+          aria-label="Scentalka home"
+          >scentalka<span> / </span></a
+        >
+        <span class="tagline">A little more life, in English.</span>
+        <div class="top-actions">
+          <button class="icon-button" id="guide-button" aria-label="Open first-time setup and tour" title="Setup & tour">
+            <span data-icon="leaf"></span>
+          </button>
+          <span class="saved"><i></i> Saved on this device</span
+          ><button
+            class="icon-button"
+            id="shortcuts"
+            aria-label="Keyboard shortcuts"
+          >
+            ⌘</button
+          ><button
+            id="settings"
+            class="profile"
+            aria-label="Open world settings"
+          >
+            C
+          </button>
+        </div>
+      </header>
+      <div class="workspace">
+        <nav class="rail" aria-label="World navigation">
+          <button
+            class="rail-button selected"
+            data-panel="world"
+            aria-label="World"
+            title="World (Alt+W)"
+          >
+            <span data-icon="world"></span><small>World</small>
+          </button>
+          <button
+            class="rail-button"
+            data-panel="tasks"
+            aria-label="Tasks"
+            title="Tasks (Alt+T)"
+          >
+            <span data-icon="tasks"></span><small>Tasks</small
+            ><b id="task-count"></b>
+          </button>
+          <button
+            class="rail-button"
+            data-panel="pocket"
+            aria-label="Pocket"
+            title="Pocket (Alt+I)"
+          >
+            <span data-icon="bag"></span><small>Pocket</small>
+          </button>
+          <button
+            class="rail-button"
+            data-panel="journal"
+            aria-label="Journal"
+            title="Journal (Alt+J)"
+          >
+            <span data-icon="journal"></span><small>Journal</small>
+          </button>
+          <button class="rail-button" id="world-desk" aria-label="World desk">
+            <span data-icon="directory"></span><small>Desk</small>
+          </button>
+          <div class="rail-spacer"></div>
+          <button
+            class="rail-button"
+            id="open-review"
+            aria-label="Prototype studio"
+          >
+            <span data-icon="sliders"></span><small>Studio</small>
+          </button>
+          <button class="rail-button" id="end-day" aria-label="End the day">
+            <span data-icon="moon"></span><small>Day end</small>
+          </button>
+        </nav>
+        <main class="game">
+          <div class="world-heading">
+            <div>
+              <div class="eyebrow" id="day-label">
+                MONDAY, OCTOBER 19 · DAY 1
+              </div>
+              <h1 id="scene-title">A morning at home<span>.</span></h1>
+            </div>
+            <div class="clock">
+              <strong id="clock">07:00</strong
+              ><span id="clock-status"><i></i> Time is paused</span>
+            </div>
+          </div>
+          <div class="scene-meta">
+            <span id="location-label">Home <span> / </span> Living Room</span
+            ><button id="role-button" class="text-button">
+              Visiting as <strong id="role">Father</strong
+              ><span data-icon="chevron"></span>
+            </button>
+          </div>
+          <div class="map-stage" id="map-stage">
+            <div class="map-topline">
+              <span class="map-label">YOUR LITTLE WORLD</span
+              ><span class="map-floor"
+                >Single floor <span>·</span> 2D view</span
+              >
+            </div>
+            <canvas
+              id="world-canvas"
+              width="1056"
+              height="600"
+              aria-label="Top down map of your current scene; use World commands to move"
+            ></canvas>
+            <div class="map-bottom">
+              <span
+                ><i class="player-dot"></i>
+                <span id="map-you">You · Living Room</span></span
+              ><span id="world-desk-status">Your world is waiting.</span>
+            </div>
+            <div class="scene-note" id="scene-note"></div>
+          </div>
+          <div class="world-feedback" aria-live="polite">
+            <div class="feedback-icon" data-icon="leaf"></div>
+            <div>
+              <span class="eyebrow" id="feedback-label"
+                >A MOMENT TO YOURSELF</span
+              >
+              <p id="feedback">
+                The house is quiet. Sarah is by the entrance, and your phone is
+                with you.
+              </p>
+            </div>
+            <button id="stop-plan" class="stop-button" hidden>
+              Stop <kbd>Esc</kbd>
+            </button>
+          </div>
+          <section
+            class="drawer"
+            id="drawer"
+            hidden
+            aria-label="World details"
+          ></section>
+        </main>
+        <aside class="messenger" aria-label="Messages">
+          <div class="messenger-heading">
+            <h2>Conversations</h2>
+            <button
+              id="directory"
+              class="icon-button"
+              aria-label="Public service directory"
+              title="Public service directory"
+            >
+              <span data-icon="directory"></span>
+            </button>
+          </div>
+          <div class="contact-list" id="contact-list"></div>
+          <div class="chat-heading" id="chat-heading"></div>
+          <div class="chat-scroll" id="chat-scroll" aria-live="polite"></div>
+          <div class="chat-footnote" id="chat-footnote">
+            Only you choose what to say.
+          </div>
+        </aside>
+        <section class="composer" aria-label="Command and message input">
+          <div class="composer-context">
+            <div
+              class="context-tabs"
+              role="tablist"
+              aria-label="Input destination"
+            >
+              <button role="tab" data-mode="world">World <kbd>1</kbd></button
+              ><button role="tab" data-mode="npc" class="active">
+                <span id="npc-tab-name">Sarah</span> <kbd>2</kbd></button
+              ><button role="tab" data-mode="assistant">
+                Assistant <kbd>3</kbd>
+              </button>
+            </div>
+            <span id="composer-target">MESSAGE TO SARAH · PRIVATE IM</span
+            ><span id="pending-time"></span>
+          </div>
+          <div
+            id="flow-examples"
+            class="flow-examples"
+            aria-label="Optional flow examples"
+          ></div>
+          <form id="input-form">
+            <button
+              type="button"
+              id="mic-button"
+              class="mic-button"
+              aria-label="Record an English message or command"
+              title="Record / stop (Alt+M)"
+            >
+              <span data-icon="mic"></span></button
+            ><input
+              id="command-input"
+              autocomplete="off"
+              aria-label="Message to Sarah"
+              placeholder="Say what’s on your mind…"
+              maxlength="1500"
+            /><button type="submit" id="send-button">
+              Send <span data-icon="arrow"></span>
+            </button>
+          </form>
+          <div class="composer-hints">
+            <button type="button" id="voice-review" class="text-button" hidden>
+              Review voice draft</button
+            ><span id="input-hint">Your words are sent exactly as written.</span
+            ><span
+              ><kbd>Enter</kbd> send <span>·</span> <kbd>Alt</kbd> +
+              <kbd>1 / 2 / 3</kbd> switch</span
+            >
+          </div>
+        </section>
+      </div>
+    </div>
+    <dialog id="modal"><div id="modal-content"></div></dialog>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="world.js?v=20261019-timeline1"></script>
+    <script src="flows.js?v=20261019-timeline1"></script>
+    <script src="records.js?v=20261019-timeline1"></script>
+    <script src="desk.js?v=20261019-timeline1"></script>
+    <script src="calendar.js?v=20261019-timeline1"></script>
+    <script src="commitments.js?v=20261019-timeline1"></script>
+    <script src="plans.js?v=20261019-timeline1"></script>
+    <script src="schedules.js?v=20261019-timeline1"></script>
+    <script src="timeline.js?v=20261019-timeline1"></script>
+    <script src="objects.js?v=20261019-timeline1"></script>
+    <script src="voice.js?v=20261019-timeline1"></script>
+    <script src="actions.js?v=20261019-timeline1"></script>
+    <script src="life.js?v=20261019-timeline1"></script>
+    <script src="controls.js?v=20261019-timeline1"></script>
+    <script src="presets.js?v=20261019-timeline1"></script>
+    <script src="guide.js?v=20261021-setup-tour1"></script>
+    <script src="app.js?v=20261019-timeline1"></script>
+  </body>
+</html>

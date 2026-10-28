@@ -1,0 +1,19 @@
+{"id":"image_001","type":"image","path":"assets/screens/home.png","source":"existing","description":"home","width":1440,"height":900,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_002","type":"image","path":"assets/screens/hospital.png","source":"existing","description":"hospital","width":1440,"height":900,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_003","type":"image","path":"assets/screens/itinerary.png","source":"existing","description":"itinerary","width":1440,"height":1000,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_004","type":"image","path":"assets/screens/plans.png","source":"existing","description":"plans","width":1440,"height":1000,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_005","type":"image","path":"assets/screens/pocket.png","source":"existing","description":"pocket","width":1440,"height":1000,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_006","type":"image","path":"assets/screens/road-interruption.png","source":"existing","description":"road interruption","width":1440,"height":900,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_007","type":"image","path":"assets/screens/road.png","source":"existing","description":"road","width":1440,"height":900,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_008","type":"image","path":"assets/screens/scene-picker.png","source":"existing","description":"scene picker","width":1440,"height":900,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_009","type":"image","path":"assets/screens/setup.png","source":"existing","description":"setup","width":1440,"height":900,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_010","type":"image","path":"assets/screens/timeline.png","source":"existing","description":"timeline","width":1440,"height":1000,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_011","type":"image","path":"assets/screens/voice-actions.png","source":"existing","description":"voice actions","width":390,"height":844,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_012","type":"image","path":"assets/screens/voice-review.png","source":"existing","description":"voice review","width":1440,"height":1000,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_013","type":"image","path":"assets/screens/world-desk.png","source":"existing","description":"world desk","width":1440,"height":1000,"provenance":{"provider":"local","adopted":true}}
+{"id":"image_014","type":"image","path":".media/images/image_014.png","source":"ingested","description":"voice-review-modal.png","provenance":{"provider":"local","from":"assets/screens/voice-review-modal.png"}}
+{"id":"image_015","type":"image","path":".media/images/image_015.png","source":"ingested","description":"onboarding-intro-modal.png","provenance":{"provider":"local","from":"assets/screens/onboarding-intro-modal.png"}}
+{"id":"image_016","type":"image","path":".media/images/image_016.png","source":"ingested","description":"onboarding-profile-modal.png","provenance":{"provider":"local","from":"assets/screens/onboarding-profile-modal.png"}}
+{"id":"image_017","type":"image","path":".media/images/image_017.png","source":"ingested","description":"onboarding-npcs-modal.png","provenance":{"provider":"local","from":"assets/screens/onboarding-npcs-modal.png"}}
+{"id":"image_018","type":"image","path":".media/images/image_018.png","source":"ingested","description":"onboarding-profile-modal.png","provenance":{"provider":"local","from":"assets/screens/onboarding-profile-modal.png"}}
+{"id":"image_019","type":"image","path":".media/images/image_019.png","source":"ingested","description":"onboarding-npcs-modal.png","provenance":{"provider":"local","from":"assets/screens/onboarding-npcs-modal.png"}}

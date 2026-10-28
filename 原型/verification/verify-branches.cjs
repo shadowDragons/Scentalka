@@ -13,7 +13,7 @@ const {
   });
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("http://localhost:8766/Scentalka%20Prototype.html");
+  await page.goto("http://localhost:8766/Scentalka%20Prototype.html?verify=1");
   await page.waitForFunction(() => Prototype.state());
   const state = () => page.evaluate(() => Prototype.state()),
     cmd = (...args) =>

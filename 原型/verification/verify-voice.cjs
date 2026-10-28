@@ -96,7 +96,7 @@ const {
       pause() {}
     };
   });
-  await page.goto("http://localhost:8766/Scentalka%20Prototype.html");
+  await page.goto("http://localhost:8766/Scentalka%20Prototype.html?verify=1");
   await page.waitForFunction(() => window.Prototype?.state());
   const state = () => page.evaluate(() => Prototype.state()),
     cmd = (...a) => page.evaluate((a) => Prototype.command(...a), a),

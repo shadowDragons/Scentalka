@@ -1,0 +1,731 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"paper\" data-start=\"0\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "/Users/junbinzhong/Workspace/Scentalka/videos/scentalka-tour/compositions/frames/01-start-world.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      }
+    ],
+    "filesScanned": 9
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 4,
+    "findings": [
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 54.237,
+        "selector": "#el-06-three-voices > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(1)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 96,
+          "top": 58,
+          "right": 340.2,
+          "bottom": 87,
+          "width": 244.2,
+          "height": 29
+        },
+        "containerSelector": "#el-07-keep-records > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(1)",
+        "text": "06 · YOUR WORDS",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 96,
+          "y": 58,
+          "width": 244.2,
+          "height": 29
+        },
+        "firstSeen": 54.237,
+        "lastSeen": 54.237,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          54.237
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 54.237,
+        "selector": "#el-06-three-voices > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(2)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1779.86,
+          "top": 79.5,
+          "right": 1796.14,
+          "bottom": 108.5,
+          "width": 16.28,
+          "height": 29
+        },
+        "containerSelector": "#el-07-keep-records > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(2)",
+        "text": "S",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 1779.86,
+          "y": 79.5,
+          "width": 16.28,
+          "height": 29
+        },
+        "firstSeen": 54.237,
+        "lastSeen": 54.237,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          54.237
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 54.237,
+        "selector": "#el-06-three-voices > div:nth-of-type(1) > div:nth-of-type(2)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 106,
+          "top": 175,
+          "right": 410,
+          "bottom": 201,
+          "width": 304,
+          "height": 26
+        },
+        "containerSelector": "#el-07-keep-records > div:nth-of-type(1) > div:nth-of-type(2)",
+        "text": "THREE CLEAR CHANNELS",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 106,
+          "y": 175,
+          "width": 304,
+          "height": 26
+        },
+        "firstSeen": 54.237,
+        "lastSeen": 54.237,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          54.237
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 54.237,
+        "selector": "#el-06-three-voices > div:nth-of-type(1) > div:nth-of-type(10)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1724.27,
+          "top": 1001,
+          "right": 1815,
+          "bottom": 1024,
+          "width": 90.73,
+          "height": 23
+        },
+        "containerSelector": "#el-07-keep-records > div:nth-of-type(1) > div:nth-of-type(5) > span:nth-of-type(2)",
+        "text": "06 / 08",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 1724.27,
+          "y": 1001,
+          "width": 90.73,
+          "height": 23
+        },
+        "firstSeen": 54.237,
+        "lastSeen": 54.237,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          54.237
+        ]
+      }
+    ],
+    "duration": 75,
+    "samples": [
+      4.167,
+      12.5,
+      20.833,
+      29.167,
+      37.5,
+      45.833,
+      54.167,
+      62.5,
+      70.833
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 4,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 20,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.54:1; WCAG AA requires 4.5:1.",
+        "text": "S",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(246,243,236)",
+        "ratio": 3.54,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(157,96,70)",
+        "large": false,
+        "selector": "div > div:nth-of-type(1) > div > div:nth-of-type(2) > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-start-world.html",
+        "bbox": {
+          "x": 1752,
+          "y": 58,
+          "width": 72,
+          "height": 72
+        },
+        "time": 4.167,
+        "times": [
+          4.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.54:1; WCAG AA requires 4.5:1.",
+        "text": "01 · enter the world",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(246,243,236)",
+        "ratio": 3.54,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(157,96,70)",
+        "large": false,
+        "selector": "div > div:nth-of-type(1) > div > div:nth-of-type(3)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-start-world.html",
+        "bbox": {
+          "x": 110,
+          "y": 250,
+          "width": 319.203125,
+          "height": 27
+        },
+        "time": 4.167,
+        "times": [
+          4.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.54:1; WCAG AA requires 4.5:1.",
+        "text": "S",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(246,243,236)",
+        "ratio": 3.54,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(157,96,70)",
+        "large": false,
+        "selector": "div > div:nth-of-type(3) > div > div:nth-of-type(1) > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/03-home.html",
+        "bbox": {
+          "x": 1752,
+          "y": 58,
+          "width": 72,
+          "height": 72
+        },
+        "time": 20.833,
+        "times": [
+          20.833
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.54:1; WCAG AA requires 4.5:1.",
+        "text": "A PLACE TO BEGIN",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(246,243,236)",
+        "ratio": 3.54,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(157,96,70)",
+        "large": false,
+        "selector": "#kicker",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/03-home.html",
+        "bbox": {
+          "x": 110,
+          "y": 180,
+          "width": 243.203125,
+          "height": 26
+        },
+        "time": 20.833,
+        "times": [
+          20.833
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.54:1; WCAG AA requires 4.5:1.",
+        "text": "S",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(246,243,236)",
+        "ratio": 3.54,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(157,96,70)",
+        "large": false,
+        "selector": "div > div:nth-of-type(5) > div > div:nth-of-type(1) > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/05-road-choice.html",
+        "bbox": {
+          "x": 1752,
+          "y": 58,
+          "width": 72,
+          "height": 72
+        },
+        "time": 37.5,
+        "times": [
+          37.5
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.54:1; WCAG AA requires 4.5:1.",
+        "text": "PLANS CAN CHANGE",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(246,243,236)",
+        "ratio": 3.54,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(157,96,70)",
+        "large": false,
+        "selector": "div > div:nth-of-type(5) > div > div:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/05-road-choice.html",
+        "bbox": {
+          "x": 105,
+          "y": 180,
+          "width": 243.203125,
+          "height": 26
+        },
+        "time": 37.5,
+        "times": [
+          37.5
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.33:1; WCAG AA requires 4.5:1.",
+        "text": "S",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 1.33,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(246,237,233)",
+        "large": false,
+        "selector": "div > div:nth-of-type(6) > div > div:nth-of-type(1) > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 1752,
+          "y": 58,
+          "width": 72,
+          "height": 72
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.94:1; WCAG AA requires 4.5:1.",
+        "text": "THREE CLEAR CHANNELS",
+        "fg": "rgb(231,185,159)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 2.94,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(248,236,228)",
+        "large": false,
+        "selector": "div > div:nth-of-type(6) > div > div:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 106,
+          "y": 175,
+          "width": 304,
+          "height": 26
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.13:1; WCAG AA requires 3:1.",
+        "text": "Write to one person. You press send.",
+        "fg": "rgb(231,185,159)",
+        "bg": "rgb(112,137,123)",
+        "ratio": 2.13,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(69,55,47)",
+        "large": true,
+        "selector": "div > div:nth-of-type(6) > div > div:nth-of-type(5) > p",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 792,
+          "y": 563,
+          "width": 336,
+          "height": 32.5
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.38:1; WCAG AA requires 3:1.",
+        "text": "Assistant",
+        "fg": "rgb(246,243,236)",
+        "bg": "rgb(199,148,124)",
+        "ratio": 2.38,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(82,81,79)",
+        "large": true,
+        "selector": "div > div:nth-of-type(6) > div > div:nth-of-type(6) > h3",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 1447,
+          "y": 487,
+          "width": 336,
+          "height": 56
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.49:1; WCAG AA requires 3:1.",
+        "text": "Ask for help with what you know.",
+        "fg": "rgb(231,185,159)",
+        "bg": "rgb(199,148,124)",
+        "ratio": 1.49,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(96,77,66)",
+        "large": true,
+        "selector": "div > div:nth-of-type(6) > div > div:nth-of-type(6) > p",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 1447,
+          "y": 563,
+          "width": 336,
+          "height": 32.5
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.94:1; WCAG AA requires 3:1.",
+        "text": "Only you choose what to say.",
+        "fg": "rgb(231,185,159)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 2.94,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(232,188,163)",
+        "large": true,
+        "selector": "#prompt",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 105,
+          "y": 929,
+          "width": 298.5625,
+          "height": 41
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.94:1; WCAG AA requires 4.5:1.",
+        "text": "06 / 08",
+        "fg": "rgb(231,185,159)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 2.94,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(248,236,228)",
+        "large": false,
+        "selector": "div > div:nth-of-type(6) > div > div:nth-of-type(10)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/06-three-voices.html",
+        "bbox": {
+          "x": 1724.265625,
+          "y": 1001,
+          "width": 90.734375,
+          "height": 23
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.19:1; WCAG AA requires 4.5:1.",
+        "text": "07 · keep what matters",
+        "fg": "rgb(41,62,53)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 2.19,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(237,239,238)",
+        "large": false,
+        "selector": "div > div:nth-of-type(7) > div > div:nth-of-type(1) > span:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/07-keep-records.html",
+        "bbox": {
+          "x": 96,
+          "y": 58,
+          "width": 358.171875,
+          "height": 72
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.33:1; WCAG AA requires 4.5:1.",
+        "text": "S",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 1.33,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(246,237,233)",
+        "large": false,
+        "selector": "div > div:nth-of-type(7) > div > div:nth-of-type(1) > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/07-keep-records.html",
+        "bbox": {
+          "x": 1752,
+          "y": 58,
+          "width": 72,
+          "height": 72
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.33:1; WCAG AA requires 4.5:1.",
+        "text": "YOUR WORLD REMEMBERS",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 1.33,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(246,237,233)",
+        "large": false,
+        "selector": "div > div:nth-of-type(7) > div > div:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/07-keep-records.html",
+        "bbox": {
+          "x": 106,
+          "y": 170,
+          "width": 304,
+          "height": 26
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.19:1; WCAG AA requires 3:1.",
+        "text": "What happened stays visible.",
+        "fg": "rgb(41,62,53)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 2.19,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(192,198,196)",
+        "large": true,
+        "selector": "#headline",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/07-keep-records.html",
+        "bbox": {
+          "x": 105,
+          "y": 232.85079956054688,
+          "width": 785.703125,
+          "height": 77.75
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.31:1; WCAG AA requires 4.5:1.",
+        "text": "Tasks · objects · notes · timeline",
+        "fg": "rgb(62,98,80)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 1.31,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(235,239,237)",
+        "large": false,
+        "selector": "div > div:nth-of-type(7) > div > div:nth-of-type(5) > span:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/07-keep-records.html",
+        "bbox": {
+          "x": 105,
+          "y": 999,
+          "width": 440.640625,
+          "height": 23
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.31:1; WCAG AA requires 4.5:1.",
+        "text": "07 / 08",
+        "fg": "rgb(62,98,80)",
+        "bg": "rgb(97,112,103)",
+        "ratio": 1.31,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(235,239,237)",
+        "large": false,
+        "selector": "div > div:nth-of-type(7) > div > div:nth-of-type(5) > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/07-keep-records.html",
+        "bbox": {
+          "x": 1724.265625,
+          "y": 999,
+          "width": 90.734375,
+          "height": 23
+        },
+        "time": 54.167,
+        "times": [
+          54.167
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.92:1; WCAG AA requires 4.5:1.",
+        "text": "S",
+        "fg": "rgb(181,111,81)",
+        "bg": "rgb(41,62,53)",
+        "ratio": 2.92,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(202,152,130)",
+        "large": false,
+        "selector": "div > div:nth-of-type(8) > div > div:nth-of-type(1) > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/08-voice-review.html",
+        "bbox": {
+          "x": 1752,
+          "y": 58,
+          "width": 72,
+          "height": 72
+        },
+        "time": 70.833,
+        "times": [
+          70.833
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      4.167,
+      20.833,
+      37.5,
+      54.167,
+      70.833
+    ],
+    "checked": 53,
+    "passed": 33
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

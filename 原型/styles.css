@@ -122,6 +122,24 @@ p {
   align-items: center;
   gap: 22px;
 }
+.language-toggle {
+  min-width: 42px;
+  height: 30px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  color: var(--green);
+  font-size: 12px;
+  background: var(--surface);
+}
+.language-toggle:hover {
+  background: #e5eadf;
+}
+.setup-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .saved {
   font-size: 11px;
   color: var(--muted);
@@ -1617,6 +1635,219 @@ dialog p {
   width: 18px;
   height: 18px;
   accent-color: var(--green);
+}
+
+.setup-progress {
+  display: flex;
+  gap: 6px;
+  margin: -4px 0 18px;
+}
+.setup-progress i {
+  height: 3px;
+  flex: 1;
+  background: var(--line);
+}
+.setup-progress i.active {
+  background: var(--green);
+}
+.setup-body {
+  max-height: min(58dvh, 610px);
+  overflow: auto;
+  padding-right: 4px;
+}
+.setup-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: center;
+  padding: 7px 0 20px;
+}
+.setup-world-art {
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: relative;
+  overflow: hidden;
+  background: #e8eadf;
+  border-radius: 8px;
+  padding: 20px;
+  color: #536d5b;
+  font-size: 9px;
+  letter-spacing: 0;
+}
+.setup-world-art span {
+  width: max-content;
+  padding: 7px 10px;
+  background: #fffdf8;
+  border: 1px solid #d4d9ca;
+  z-index: 1;
+}
+.setup-world-art span:nth-child(2) {
+  align-self: center;
+}
+.setup-world-art span:nth-child(3) {
+  align-self: end;
+}
+.setup-world-art i {
+  position: absolute;
+  height: 2px;
+  width: 75%;
+  left: 13%;
+  top: 51%;
+  background: #afbd9c;
+  transform: rotate(20deg);
+}
+.setup-intro h3 {
+  font: 27px/1.1 "Instrument Serif", Georgia, serif;
+  margin: 8px 0;
+}
+.setup-intro p:not(.eyebrow) {
+  font-size: 12px;
+}
+.setup-facts {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0 4px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+}
+.setup-facts b {
+  color: var(--green);
+  font: 22px "Instrument Serif", Georgia, serif;
+  margin-right: 4px;
+}
+.setup-scenes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0 8px;
+}
+.setup-scene {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 9px;
+}
+.setup-scene:has(input:checked) {
+  border-color: var(--green);
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+.setup-scene input {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  accent-color: var(--green);
+}
+.setup-scene-art {
+  height: 86px;
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #e8eadf;
+  overflow: hidden;
+}
+.setup-scene-art i {
+  width: 24%;
+  height: 52%;
+  background: #bcc6ae;
+  border: 1px solid #aeb9a2;
+  animation: setup-arrive 3.2s ease-in-out infinite alternate;
+}
+.setup-scene-art i:nth-child(2) { height: 76%; animation-delay: .2s; }
+.setup-scene-art i:nth-child(3) { height: 42%; animation-delay: .4s; }
+.setup-scene-art.hospital { background: #e5ecec; }
+.setup-scene-art.hospital i { background: #b8ceca; border-radius: 2px; }
+.setup-scene-art.road { background: #e8e7dc; }
+.setup-scene-art.road i { background: #c9c4ab; transform: skew(-14deg); }
+.setup-scene strong { font-size: 11px; line-height: 1.4; }
+.setup-scene small { color: var(--muted); font-size: 9px; margin-top: 5px; }
+.setup-scene em { color: var(--muted); font-size: 9px; font-style: normal; line-height: 1.55; margin-top: 8px; }
+.setup-form { margin: 16px 0 8px; }
+.setup-npcs { display: grid; gap: 7px; margin: 14px 0; }
+.setup-npc { border-bottom: 1px solid var(--line); }
+.setup-npc summary {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  list-style: none;
+}
+.setup-npc summary::-webkit-details-marker { display: none; }
+.setup-avatar {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e7ebdf;
+  color: var(--green);
+  font: 16px "Instrument Serif", Georgia, serif;
+}
+.setup-npc summary > span:nth-child(2) { flex: 1; }
+.setup-npc summary strong, .setup-npc summary small { display: block; }
+.setup-npc summary strong { font-size: 11px; }
+.setup-npc summary small { color: var(--muted); font-size: 9px; margin-top: 3px; }
+.setup-edit { color: var(--green); font-size: 10px; }
+.setup-npc[open] .setup-edit { font-size: 0; }
+.setup-npc[open] .setup-edit::after { content: "Close"; font-size: 10px; }
+/* Contextual guidance uses the real page, without a blocking backdrop. */
+.inline-guide-target {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+#inline-guide {
+  position: fixed;
+  z-index: 60;
+  padding: 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 12px 40px rgba(41, 62, 53, .22);
+  overflow: auto;
+}
+#inline-guide[hidden] { display: none; }
+.inline-guide-heading { display: flex; align-items: flex-start; gap: 12px; }
+.inline-guide-heading h2 { flex: 1; margin: 0; font: 28px/1.12 "Instrument Serif", Georgia, serif; text-wrap: balance; }
+.inline-guide-close { flex: 0 0 32px; width: 32px; height: 32px; margin: -6px -6px 0 0; }
+#inline-guide p { margin: 12px 0 18px; font-size: 13px; line-height: 1.6; }
+.inline-guide-progress { display: flex; align-items: center; gap: 5px; margin-bottom: 18px; }
+.inline-guide-progress span { height: 3px; flex: 1; background: var(--line); }
+.inline-guide-progress span.active { background: var(--green); }
+.inline-guide-progress small { margin-left: 8px; font-size: 11px; font-variant-numeric: tabular-nums; }
+.inline-guide-actions { display: flex; align-items: center; gap: 8px; }
+.inline-guide-actions button { min-height: 40px; padding: 0 12px; font-size: 12px; }
+.inline-guide-skip { margin-right: auto; }
+#inline-guide .text-button { color: var(--green); }
+.inline-guide-setup { display: block; margin: 14px 0 0; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; }
+#inline-guide button:disabled { opacity: .5; cursor: default; }
+@keyframes setup-arrive { from { transform: translateY(5px); } to { transform: translateY(-4px); } }
+
+@media (max-width: 600px) {
+  .setup-intro { grid-template-columns: 1fr; gap: 12px; }
+  .setup-world-art { min-height: 110px; }
+  .setup-scenes { grid-template-columns: 1fr; }
+  .setup-scene { display: grid; grid-template-columns: 84px 1fr; column-gap: 10px; }
+  .setup-scene-art { grid-row: span 3; height: 78px; margin: 0; }
+  .setup-scene em { grid-column: 2; }
+  .setup-facts { gap: 8px; justify-content: space-between; }
+  .setup-facts span { display: flex; flex-direction: column; }
+  #inline-guide { padding: 16px; }
+  .inline-guide-heading h2 { font-size: 25px; }
+  #inline-guide p { margin: 10px 0 14px; font-size: 12px; }
+  .inline-guide-progress { margin-bottom: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .setup-scene-art i { animation: none; }
 }
 
 @media (max-width: 600px) {

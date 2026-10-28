@@ -14,9 +14,15 @@ python3 -m http.server 8766 --bind 127.0.0.1 --directory 原型
 
 浏览器访问：<http://localhost:8766/Scentalka%20Prototype.html>
 
+如果这个浏览器已经体验过原型，首次设定会按存档状态保持关闭；在不删除当前进度的情况下重新体验，可打开 <http://localhost:8766/Scentalka%20Prototype.html?setup=1>，或点击顶部叶片按钮。`?setup=1` 只重开设定，不会清空故事、任务或人物资料；`?verify=1` 仅供自动化验证使用。
+
 无需安装前端依赖、模型密钥或数据库。请通过 HTTP 打开，以保持录音权限和本地存档行为一致。字体与地图美术均已保存在本地。
 
+首次进入可以选择 Home / Hospital / Road 开局、编辑主角与八位 NPC。按 **Save & explore** 或 **Use current details** 后，直接在真实页面上跟着七步提示体验：World → 输入 → 提交 → 行动反馈 → 联系人 → Assistant → Try a flow。操作对应控件即可继续，输入步骤保留提示直到确认草稿或实际提交；空白等无效提交不会推进。提示可以随时跳过、后退或按 Escape 关闭，不会自动发送、改写草稿或切换场景。顶部叶片按钮 **Page guide** 可重开页面引导；提示底部 **Edit story setup** 可回到设定。直接体验页面引导：<http://localhost:8766/Scentalka%20Prototype.html?tour=1>。该原型是本地规则模拟，不连接真实 AI 服务。
+
 ## 如何体验
+
+第一次操作建议直接打开 [全功能体验 SOP](全功能体验SOP.md)：先照着家庭、医院、道路三条主线走，再逐项体验计划、候补、承诺补救、人物日程、语音、设置与数据。每节都写明起始存档、英文指令、点击入口和完成标志。
 
 默认从 Home / Living Room / 07:00 开始。所有游戏界面、控制和帮助使用英语。地图不可点击移动，通过底部输入行动。
 
